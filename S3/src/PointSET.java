@@ -16,6 +16,7 @@ import java.util.Arrays;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Out;
+import edu.princeton.cs.algs4.RectHV;
 
 public class PointSET {
     // construct an empty set of points
