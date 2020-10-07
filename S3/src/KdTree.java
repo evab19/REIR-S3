@@ -2,12 +2,12 @@
 /*************************************************************************
  *************************************************************************/
 
-import java.awt.geom.Point2D;
 import java.util.Arrays;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Out;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.Point2D;
 
 public class KdTree {
     // construct an empty set of points
@@ -52,7 +52,7 @@ public class KdTree {
      * Test client
      ******************************************************************************/
     public static void main(String[] args) {
-        In in = new In();
+        /*In in = new In();
         Out out = new Out();
         int nrOfRecangles = in.readInt();
         int nrOfPointsCont = in.readInt();
@@ -102,6 +102,6 @@ public class KdTree {
             out.println((i + 1) + ": " + set.nearest(pointsNear[i]));
         }
 
-        out.println();
+        out.println();*/
     }
 }
