@@ -29,10 +29,10 @@ public class KdTree {
         private Node left;
         private Node right;
 
-        public Node(Point2D point) {
+        public Node(Point2D point, RectHV rectangle) {
             this.p = point;
             this.vertical = true;
-            this.rectangle = new RectHV(0.0, 0.0, 1.0, 1.0);
+            this.rectangle = rectangle;
         }
     }
 
@@ -48,7 +48,47 @@ public class KdTree {
 
     // add the point p to the set (if it is not already in the set)
     public void insert(Point2D p) {
+        RectHV rectangle = new RectHV(0.0, 0.0, 1.0, 1.0);
+        root = insert(root, p, rectangle, true);
     };
+
+    private Node insert(Node node, Point2D p, RectHV rectangle, boolean vertical) {
+        //Insert new point when you reach an empty location
+        if (node == null){
+            size++;
+            return new Node(p, rectangle);
+        }
+        //If the point already exists, return to avoid duplicates
+        if(node.p.equals(p)) return node;
+
+        //If the last point was vertical, check the x
+        if(node.vertical) {
+            if(p.x() < node.p.x()){
+                //Go left
+                rectangle.xmax = node.p.x();
+                node.left = insert(node.left, p, rectangle ,false);
+            }
+            else{
+                //Go right
+                rectangle.xmin = node.p.x();
+                node.right = insert(node.right, p, rectangle, false);
+            }
+        }
+        //If the last point was horizontal, check the y
+        else{
+            if(p.y() < node.p.y()){
+                //Go left
+                rectangle.ymax = node.p.y();
+                node.left = insert(node.left, p, rectangle, false);
+            }
+            else{
+                //Go right
+                rectangle.ymin = node.p.y();
+                node.right = insert(node.right, p, rectangle, true);
+            }
+        }
+
+    }
 
     // does the set contain the point p?
     public boolean contains(Point2D p) {
