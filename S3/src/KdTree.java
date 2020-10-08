@@ -10,18 +10,40 @@ import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Point2D;
 
 public class KdTree {
+
+    private Node root;
+    private int size;
+
+
     // construct an empty set of points
     public KdTree() {
+        size = 0;
+        root = null;
+    }
+
+    private class Node {
+        // Það sem Node vill er parent, orientation
+        private Point2D p;
+        private boolean vertical;
+        private RectHV rectangle;
+        private Node left;
+        private Node right;
+
+        public Node(Point2D point) {
+            this.p = point;
+            this.vertical = true;
+            this.rectangle = new RectHV(0.0, 0.0, 1.0, 1.0);
+        }
     }
 
     // is the set empty?
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     // number of points in the set
     public int size() {
-        return 0;
+        return size;
     }
 
     // add the point p to the set (if it is not already in the set)
@@ -52,7 +74,7 @@ public class KdTree {
      * Test client
      ******************************************************************************/
     public static void main(String[] args) {
-        /*In in = new In();
+        In in = new In();
         Out out = new Out();
         int nrOfRecangles = in.readInt();
         int nrOfPointsCont = in.readInt();
@@ -102,6 +124,6 @@ public class KdTree {
             out.println((i + 1) + ": " + set.nearest(pointsNear[i]));
         }
 
-        out.println();*/
+        out.println();
     }
 }
