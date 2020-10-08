@@ -2,12 +2,15 @@
 /*************************************************************************
  *************************************************************************/
 
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Out;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Point2D;
+import org.w3c.dom.css.Rect;
 
 public class KdTree {
 
@@ -22,7 +25,6 @@ public class KdTree {
     }
 
     private class Node {
-        // Það sem Node vill er parent, orientation
         private Point2D p;
         private boolean vertical;
         private RectHV rectangle;
@@ -31,7 +33,6 @@ public class KdTree {
 
         public Node(Point2D point, RectHV rectangle) {
             this.p = point;
-            this.vertical = true;
             this.rectangle = rectangle;
         }
     }
@@ -92,7 +93,38 @@ public class KdTree {
 
     // does the set contain the point p?
     public boolean contains(Point2D p) {
-        return false;
+        return contains(root, p, true);
+    }
+
+    // Recursive contains helper function
+    private boolean contains(Node node, Point2D point, boolean vertical) {
+        // If tree is empty or if we reach the end of the tree without finding the node
+        if (node == null) {
+            return false;
+        }
+        // If we find a matching point in the tree
+        else if (node.p.equals(point)) {
+            return true;
+        }
+        else {
+            // Figure out if we are going left or right from the current node
+            if (vertical) {
+                if (point.x() - node.p.x() < 0) {
+                    return contains(node.left, point, false);
+                }
+                else {
+                    return contains(node.right, point, false);
+                }
+            }
+            else {
+                if (point.y() - node.p.y() < 0) {
+                    return contains(node.left, point, true);
+                }
+                else {
+                    return contains(node.right, point,true);
+                }
+            }
+        }
     }
 
     // draw all of the points to standard draw
@@ -102,7 +134,22 @@ public class KdTree {
 
     // all points in the set that are inside the rectangle
     public Iterable<Point2D> range(RectHV rect) {
-        return null;
+        ArrayList<Point2D> points = new ArrayList();
+        range(rect, root, points);
+        return points;
+    }
+
+    private void range(RectHV rect, Node node, ArrayList<Point2D> points) {
+        if (node == null) {
+            return;
+        }
+        if (rect.contains(node.p)) {
+            points.add(node.p);
+        }
+        if (rect.intersects(node.rectangle)) {
+            range(rect, node.left, points);
+            range(rect, node.right, points);
+        }
     }
 
     // a nearest neighbor in the set to p; null if set is empty
