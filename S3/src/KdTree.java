@@ -10,7 +10,6 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Out;
 import edu.princeton.cs.algs4.RectHV;
 import edu.princeton.cs.algs4.Point2D;
-import org.w3c.dom.css.Rect;
 
 public class KdTree {
 
@@ -26,7 +25,6 @@ public class KdTree {
 
     private class Node {
         private Point2D p;
-        private boolean vertical;
         private RectHV rectangle;
         private Node left;
         private Node right;
@@ -51,7 +49,7 @@ public class KdTree {
     public void insert(Point2D p) {
         RectHV rectangle = new RectHV(0.0, 0.0, 1.0, 1.0);
         root = insert(root, p, rectangle, true);
-    };
+    }
 
     private Node insert(Node node, Point2D p, RectHV rectangle, boolean vertical) {
         //Insert new point when you reach an empty location
@@ -63,15 +61,15 @@ public class KdTree {
         if(node.p.equals(p)) return node;
 
         //If the last point was vertical, check the x
-        if(node.vertical) {
+        if(vertical) {
             if(p.x() < node.p.x()){
                 //Go left
-                rectangle.xmax = node.p.x();
+                rectangle = new RectHV(rectangle.xmin(), rectangle.ymin(), node.p.x(), rectangle.ymax());
                 node.left = insert(node.left, p, rectangle ,false);
             }
             else{
                 //Go right
-                rectangle.xmin = node.p.x();
+                rectangle = new RectHV(node.p.x(), rectangle.ymin(), rectangle.xmax(), rectangle.ymax());
                 node.right = insert(node.right, p, rectangle, false);
             }
         }
@@ -79,16 +77,16 @@ public class KdTree {
         else{
             if(p.y() < node.p.y()){
                 //Go left
-                rectangle.ymax = node.p.y();
+                rectangle = new RectHV(rectangle.xmin(), rectangle.ymin(), rectangle.xmax(), node.p.y());
                 node.left = insert(node.left, p, rectangle, false);
             }
             else{
                 //Go right
-                rectangle.ymin = node.p.y();
+                rectangle = new RectHV(rectangle.xmin(), node.p.y(), rectangle.xmax(), rectangle.ymax());
                 node.right = insert(node.right, p, rectangle, true);
             }
         }
-
+        return node;
     }
 
     // does the set contain the point p?
