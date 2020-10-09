@@ -161,31 +161,8 @@ public class KdTree {
         }
 
         if (node.rectangle.distanceSquaredTo(point) < nearest.distanceSquaredTo(point)) {
-            Node closer;
-            Node further;
-
-            if (vertical) {
-                if (point.x() < node.p.x()) {
-                    closer = node.left;
-                    further = node.right;
-                }
-                else {
-                    closer = node.right;
-                    further = node.left;
-                }
-            }
-            else {
-                if (point.y() < node.p.y()){
-                    closer = node.left;
-                    further = node.right;
-                }
-                else {
-                    closer = node.right;
-                    further = node.left;
-                }
-            }
-            nearest = nearest(closer, point, nearest, !vertical);
-            nearest = nearest(further, point, nearest, !vertical);
+            nearest = nearest(node.left, point, nearest, !vertical);
+            nearest = nearest(node.right, point, nearest, !vertical);
         }
         return nearest;
     }
